@@ -1,0 +1,71 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tflint:
+    name: Lint terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cache tflint plugin directory
+        uses: actions/cache@v4
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+      - name: Initialise tflint
+        run: tflint --init
+      - name: Run TFLint
+        run: tflint
+
+  python-lint:
+    name: Lint python
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./function
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install --with dev
+      - name: Check code formatting
+        run: poetry run black --check .
+      - name: Check dependency formatting
+        run: poetry run isort --check .
+      - name: Check dependency formatting
+        run: poetry run mypy --check-untyped-defs .
+
+  python-test:
+    name: Test python
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./function
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install --with dev
+      - name: Install plugin
+        run: poetry add pytest-github-actions-annotate-failures
+      - name: Pytest
+        run: poetry run pytest

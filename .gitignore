@@ -1,0 +1,10 @@
+# Terraform
+builds
+.terraform
+.terraform.lock.hcl
+*.tfstate*
+
+# Python
+.venv
+__pycache__
+.DS_Store
