@@ -31,7 +31,6 @@ def test_all_routes_as_expected(lambda_context):
     ec2_backend_route_table = ec2_backend.transit_gateways_route_tables[route_table_id]
     ec2_backend_route_table.routes["10.100.0.0/14"] = {
         "destinationCidrBlock": "10.100.0.0/14",
-        "prefixListId": "",
         "state": "active",
         "type": "propagated",
     }
@@ -53,13 +52,12 @@ def test_all_routes_as_expected(lambda_context):
     handle_event(
         {
             "transit-gateway-route-table-id": route_table_id,
-            "expected-routes": [
+            "known-routes": [
                 {
-                    "destinationCidrBlock": "10.100.0.0/14",
-                    "prefixListId": "",
-                    "state": "active",
-                    "type": "propagated",
-                }
+                    "DestinationCidrBlock": "10.100.0.0/14",
+                    "State": "active",
+                    "Type": "propagated",
+                }  # TODO: Routes should contain the expected attachment in case CIDR is static but attachment changes
             ],
         },
         lambda_context,
@@ -93,7 +91,6 @@ def test_new_route_is_identified(lambda_context):
     ec2_backend_route_table = ec2_backend.transit_gateways_route_tables[route_table_id]
     ec2_backend_route_table.routes["10.100.0.0/14"] = {
         "destinationCidrBlock": "10.100.0.0/14",
-        "prefixListId": "",
         "state": "active",
         "type": "propagated",
     }
@@ -115,7 +112,7 @@ def test_new_route_is_identified(lambda_context):
     handle_event(
         {
             "transit-gateway-route-table-id": route_table_id,
-            "expected-routes": [],
+            "known-routes": [],
         },
         lambda_context,
     )
@@ -130,6 +127,12 @@ def test_new_route_is_identified(lambda_context):
         sns_backend.topics[topic_arn].sent_notifications[0][1]
         == f"Routes for transit gateway ({route_table_id}) have changed."
     ), "Incorrect message published to sns topic"
+
+    # Verify the correct subject was published
+    assert (
+        sns_backend.topics[topic_arn].sent_notifications[0][2]
+        == f"{DEFAULT_ACCOUNT_ID} - Transit Gateway Route Table Monitor"
+    ), "Incorrect subject published to sns topic"
 
 
 @mock_aws
@@ -154,7 +157,6 @@ def test_deleted_route_is_identified(lambda_context):
     ec2_backend_route_table = ec2_backend.transit_gateways_route_tables[route_table_id]
     ec2_backend_route_table.routes["10.100.0.0/14"] = {
         "destinationCidrBlock": "10.100.0.0/14",
-        "prefixListId": "",
         "state": "active",
         "type": "propagated",
     }
@@ -176,18 +178,16 @@ def test_deleted_route_is_identified(lambda_context):
     handle_event(
         {
             "transit-gateway-route-table-id": route_table_id,
-            "expected-routes": [
+            "known-routes": [
                 {
-                    "destinationCidrBlock": "10.100.0.0/14",
-                    "prefixListId": "",
-                    "state": "active",
-                    "type": "propagated",
+                    "DestinationCidrBlock": "10.100.0.0/14",
+                    "State": "active",
+                    "Type": "propagated",
                 },
                 {
-                    "destinationCidrBlock": "10.104.0.0/14",
-                    "prefixListId": "",
-                    "state": "active",
-                    "type": "propagated",
+                    "DestinationCidrBlock": "10.104.0.0/14",
+                    "State": "active",
+                    "Type": "propagated",
                 },
             ],
         },
@@ -204,6 +204,12 @@ def test_deleted_route_is_identified(lambda_context):
         sns_backend.topics[topic_arn].sent_notifications[0][1]
         == f"Routes for transit gateway ({route_table_id}) have changed."
     ), "Incorrect message published to sns topic"
+
+    # Verify the correct subject was published
+    assert (
+        sns_backend.topics[topic_arn].sent_notifications[0][2]
+        == f"{DEFAULT_ACCOUNT_ID} - Transit Gateway Route Table Monitor"
+    ), "Incorrect subject published to sns topic"
 
 
 @mock_aws
@@ -228,7 +234,6 @@ def test_changed_route_is_identified(lambda_context):
     ec2_backend_route_table = ec2_backend.transit_gateways_route_tables[route_table_id]
     ec2_backend_route_table.routes["10.104.0.0/14"] = {
         "destinationCidrBlock": "10.104.0.0/14",
-        "prefixListId": "",
         "state": "active",
         "type": "propagated",
     }
@@ -250,12 +255,11 @@ def test_changed_route_is_identified(lambda_context):
     handle_event(
         {
             "transit-gateway-route-table-id": route_table_id,
-            "expected-routes": [
+            "known-routes": [
                 {
-                    "destinationCidrBlock": "10.100.0.0/14",
-                    "prefixListId": "",
-                    "state": "active",
-                    "type": "propagated",
+                    "DestinationCidrBlock": "10.100.0.0/14",
+                    "State": "active",
+                    "Type": "propagated",
                 }
             ],
         },
@@ -272,3 +276,9 @@ def test_changed_route_is_identified(lambda_context):
         sns_backend.topics[topic_arn].sent_notifications[0][1]
         == f"Routes for transit gateway ({route_table_id}) have changed."
     ), "Incorrect message published to sns topic"
+
+    # Verify the correct subject was published
+    assert (
+        sns_backend.topics[topic_arn].sent_notifications[0][2]
+        == f"{DEFAULT_ACCOUNT_ID} - Transit Gateway Route Table Monitor"
+    ), "Incorrect subject published to sns topic"
