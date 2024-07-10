@@ -88,7 +88,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
       - name: Setup provider
         run: |
-          echo "" >> terraform.tf
+          echo "provider \"aws\" { region = \"eu-west-2\" }" >> terraform.tf
       - name: Initalise terraform
         run: terraform init
       - name: Build package
