@@ -86,10 +86,21 @@ jobs:
           python-version: '3.11'
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v3
+      - name: Install test dependencies
+        run: |
+          pip install moto[all,server]
+      - name: Start moto proxy 
+        run: |
+          moto_proxy -H 0.0.0.0 -p 5005 -v > moto_proxy.log &
       - name: Setup provider
         run: |
-          echo "provider \"aws\" { region = \"eu-west-2\" }" >> terraform.tf
+          echo "provider \"aws\" {\nregion = \"eu-west-2\"\naccess_key = \"test\"\nsecret_key = \"test\"\nskip_credentials_validation = true\nskip_metadata_api_check = true\nskip_requesting_account_id  = true\ns3_use_path_style = true\nhttp_proxy = \"http://localhost:5000\"\nhttps_proxy = \"http://localhost:5000\"\nendpoints {\nsts = \"http://localhost:5000\"\n}\n}" > terraform.tf
       - name: Initalise terraform
-        run: terraform init
+        run: |
+          terraform init
       - name: Build package
-        run: terraform apply -auto-approve
+        run: |
+          terraform apply -auto-approve
+      - name: Stop proxy
+        run: |
+          kill $(lsof -t -i:5005)

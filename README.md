@@ -36,13 +36,13 @@ module "tgw_route_propagation_monitor" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.56.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.57.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_function"></a> [function](#module\_function) | terraform-aws-modules/lambda/aws | n/a |
+| <a name="module_function"></a> [function](#module\_function) | terraform-aws-modules/lambda/aws | v7.7.0 |
 
 ## Resources
 
