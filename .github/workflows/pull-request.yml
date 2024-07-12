@@ -94,7 +94,7 @@ jobs:
           moto_proxy -H 0.0.0.0 -p 5005 -v > moto_proxy.log &
       - name: Setup provider
         run: |
-          echo "provider \"aws\" {\r\nregion = \"eu-west-2\"\r\naccess_key = \"test\"\r\nsecret_key = \"test\"\r\nskip_credentials_validation = true\r\nskip_metadata_api_check = true\r\nskip_requesting_account_id  = true\r\ns3_use_path_style = true\r\nhttp_proxy = \"http://localhost:5000\"\r\nhttps_proxy = \"http://localhost:5000\"\r\nendpoints {\r\nsts = \"http://localhost:5000\"\r\n} \r\n}" > terraform.tf
+          cp .github/workflows/assets/test-provider.tf provider.tf
       - name: Initalise terraform
         run: |
           terraform init
