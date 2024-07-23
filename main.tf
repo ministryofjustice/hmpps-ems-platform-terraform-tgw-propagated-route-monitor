@@ -1,5 +1,5 @@
 module "function" {
-  source = "terraform-aws-modules/lambda/aws"
+  source  = "terraform-aws-modules/lambda/aws"
   version = "v7.7.0"
 
   create_function = var.create

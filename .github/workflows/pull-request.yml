@@ -88,10 +88,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
       - name: Install test dependencies
         run: |
-          pip install moto[all,server]
+          pip install 'moto[all,server]'
       - name: Start moto proxy 
         run: |
-          moto_proxy -H 0.0.0.0 -p 5005 -v > moto_proxy.log &
+          moto_server -H 0.0.0.0 -p 5000 > moto_proxy.log &
       - name: Setup provider
         run: |
           cp .github/workflows/assets/test-provider.tf provider.tf
@@ -103,4 +103,4 @@ jobs:
           terraform apply -auto-approve
       - name: Stop proxy
         run: |
-          kill $(lsof -t -i:5005)
+          kill $(lsof -t -i:5000)
