@@ -3,6 +3,7 @@ builds
 .terraform
 .terraform.lock.hcl
 *.tfstate*
+provider.tf
 
 # Python
 .venv
