@@ -10,6 +10,7 @@ module "function" {
   description   = "Monitor changes to propagated transit gateways routes"
   handler       = "lambda_handler.handle_event"
   runtime       = "python3.11"
+  timeout       = 30
 
   source_path = [
     "${path.module}/function/src",
