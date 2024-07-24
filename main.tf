@@ -11,6 +11,7 @@ module "function" {
   handler       = "lambda_handler.handle_event"
   runtime       = "python3.11"
   timeout       = 30
+  policy_json   = data.aws_iam_policy_document.lambda.json
 
   source_path = [
     "${path.module}/function/src",
@@ -90,6 +91,34 @@ data "aws_iam_policy_document" "scheduler" {
 
     resources = [
       module.function.lambda_function_arn
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "lambda" {
+  count = var.create ? 1 : 0
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ec2:SearchTransitGatewayRoutes"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sns:Publish"
+    ]
+
+    resources = [
+      var.sns_topic_arn
     ]
   }
 }
