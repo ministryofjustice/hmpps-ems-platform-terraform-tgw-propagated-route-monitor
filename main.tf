@@ -10,6 +10,10 @@ module "function" {
   description   = "Monitor changes to propagated transit gateways routes"
   handler       = "lambda_handler.handle_event"
   runtime       = "python3.11"
+  timeout       = 30
+
+  attach_policy_json = var.create
+  policy_json        = var.create ? data.aws_iam_policy_document.lambda[0].json : null
 
   source_path = [
     "${path.module}/function/src",
@@ -89,6 +93,34 @@ data "aws_iam_policy_document" "scheduler" {
 
     resources = [
       module.function.lambda_function_arn
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "lambda" {
+  count = var.create ? 1 : 0
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ec2:SearchTransitGatewayRoutes"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sns:Publish"
+    ]
+
+    resources = [
+      var.sns_topic_arn
     ]
   }
 }
