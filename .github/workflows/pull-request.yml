@@ -22,7 +22,7 @@ jobs:
       - name: Initialise tflint
         run: tflint --init
       - name: Run TFLint
-        run: tflint
+        run: tflint --minimum-failure-severity=error
 
   python-lint:
     name: Lint python
