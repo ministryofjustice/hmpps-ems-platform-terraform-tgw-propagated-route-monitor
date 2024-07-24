@@ -11,7 +11,9 @@ module "function" {
   handler       = "lambda_handler.handle_event"
   runtime       = "python3.11"
   timeout       = 30
-  policy_json   = data.aws_iam_policy_document.lambda[0].json
+
+  attach_policy_json = true
+  policy_json        = data.aws_iam_policy_document.lambda[0].json
 
   source_path = [
     "${path.module}/function/src",
