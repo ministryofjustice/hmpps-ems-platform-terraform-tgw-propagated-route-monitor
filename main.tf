@@ -12,8 +12,8 @@ module "function" {
   runtime       = "python3.11"
   timeout       = 30
 
-  attach_policy_json = true
-  policy_json        = data.aws_iam_policy_document.lambda[0].json
+  attach_policy_json = var.create
+  policy_json        = var.create ? data.aws_iam_policy_document.lambda[0].json : null
 
   source_path = [
     "${path.module}/function/src",
