@@ -33,6 +33,11 @@ def test_all_routes_as_expected(lambda_context):
         "destinationCidrBlock": "10.100.0.0/14",
         "state": "active",
         "type": "propagated",
+        "transitGatewayAttachments": {
+            "resourceId": "123456789",
+            "transitGatewayAttachmentId": "tgw-attach-123456789",
+            "resourceType": "direct-connect-gateway",
+        },
     }
 
     # Setup sns topic to publish notifications
@@ -57,7 +62,7 @@ def test_all_routes_as_expected(lambda_context):
                     "DestinationCidrBlock": "10.100.0.0/14",
                     "State": "active",
                     "Type": "propagated",
-                }  # TODO: Routes should contain the expected attachment in case CIDR is static but attachment changes
+                }
             ],
         },
         lambda_context,
@@ -93,6 +98,11 @@ def test_new_route_is_identified(lambda_context):
         "destinationCidrBlock": "10.100.0.0/14",
         "state": "active",
         "type": "propagated",
+        "transitGatewayAttachments": {
+            "resourceId": "123456789",
+            "transitGatewayAttachmentId": "tgw-attach-123456789",
+            "resourceType": "direct-connect-gateway",
+        },
     }
 
     # Setup sns topic to publish notifications
@@ -159,6 +169,11 @@ def test_deleted_route_is_identified(lambda_context):
         "destinationCidrBlock": "10.100.0.0/14",
         "state": "active",
         "type": "propagated",
+        "transitGatewayAttachments": {
+            "resourceId": "123456789",
+            "transitGatewayAttachmentId": "tgw-attach-123456789",
+            "resourceType": "direct-connect-gateway",
+        },
     }
 
     # Setup sns topic to publish notifications
@@ -236,6 +251,11 @@ def test_changed_route_is_identified(lambda_context):
         "destinationCidrBlock": "10.104.0.0/14",
         "state": "active",
         "type": "propagated",
+        "transitGatewayAttachments": {
+            "resourceId": "123456789",
+            "transitGatewayAttachmentId": "tgw-attach-123456789",
+            "resourceType": "direct-connect-gateway",
+        },
     }
 
     # Setup sns topic to publish notifications
