@@ -39,7 +39,7 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_function"></a> [function](#module\_function) | terraform-aws-modules/lambda/aws | v7.7.0 |
+| <a name="module_function"></a> [function](#module\_function) | terraform-aws-modules/lambda/aws | 7.7.1 |
 
 ## Resources
 
