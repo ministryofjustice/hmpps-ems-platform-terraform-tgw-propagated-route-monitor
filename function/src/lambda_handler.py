@@ -1,5 +1,5 @@
 import os
-from typing import Any
+from typing import Any, Dict, List
 
 import boto3
 from aws_lambda_powertools import Logger
@@ -19,6 +19,18 @@ def get_aws_account_id() -> str:
     return caller_identity["Account"]
 
 
+def are_routes_equal(route1: Dict[str, str], route2: Dict[str, str]) -> bool:
+    return (
+        route1["DestinationCidrBlock"] == route2["DestinationCidrBlock"]
+        and route1["Type"] == route2["Type"]
+        and route1["State"] == route2["State"]
+    )
+
+
+def contains_route(routes: List[Dict[str, str]], route: Dict[str, str]) -> bool:
+    return len([r for r in routes if are_routes_equal(r, route)]) > 0
+
+
 @logger.inject_lambda_context(log_event=True)
 def handle_event(event: dict, context: LambdaContext) -> dict[Any, Any]:
     route_table_id = event["transit-gateway-route-table-id"]
@@ -35,13 +47,17 @@ def handle_event(event: dict, context: LambdaContext) -> dict[Any, Any]:
 
     logger.info(f"Found {len(actual_routes)} route(s) for route table {route_table_id}")
 
-    unknown_routes = [route for route in actual_routes if route not in known_routes]
+    unknown_routes = [
+        route for route in actual_routes if not contains_route(known_routes, route)
+    ]
 
     logger.info(
         f"Found {len(unknown_routes)} unknown route(s) for route table {route_table_id}"
     )
 
-    missing_routes = [route for route in known_routes if route not in actual_routes]
+    missing_routes = [
+        route for route in known_routes if not contains_route(actual_routes, route)
+    ]
 
     logger.info(
         f"Found {len(missing_routes)} missing route(s) for route table {route_table_id}"
