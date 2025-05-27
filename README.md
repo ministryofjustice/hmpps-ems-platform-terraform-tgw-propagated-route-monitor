@@ -63,7 +63,7 @@ No requirements.
 | <a name="input_schedule"></a> [schedule](#input\_schedule) | Defines how frequently the route tables are checked. | `string` | `"rate(60 minutes)"` | no |
 | <a name="input_sns_topic_arn"></a> [sns\_topic\_arn](#input\_sns\_topic\_arn) | The ARN of the SNS topic that messages are published messages to. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to resources. | `map(string)` | `{}` | no |
-| <a name="input_transit_gateway_route_tables"></a> [transit\_gateway\_route\_tables](#input\_transit\_gateway\_route\_tables) | Details of the transit gateway route tables to check. | <pre>list(object({<br>    route_table_id = string,<br>    known_routes = list(object({<br>      DestinationCidrBlock = string,<br>      State                = string<br>      Type                 = string<br>    }))<br>  }))</pre> | `[]` | no |
+| <a name="input_transit_gateway_route_tables"></a> [transit\_gateway\_route\_tables](#input\_transit\_gateway\_route\_tables) | Details of the transit gateway route tables to check. | <pre>list(object({<br/>    route_table_id = string,<br/>    known_routes = list(object({<br/>      DestinationCidrBlock = string,<br/>      State                = string<br/>      Type                 = string<br/>    }))<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
