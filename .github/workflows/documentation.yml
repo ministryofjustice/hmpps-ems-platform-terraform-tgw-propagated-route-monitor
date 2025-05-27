@@ -20,7 +20,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Check terraform docs are up to date
-        uses: terraform-docs/gh-actions@v1.2.2
+        uses: terraform-docs/gh-actions@v1.4.1
         with:
           working-dir: .
           output-file: README.md
