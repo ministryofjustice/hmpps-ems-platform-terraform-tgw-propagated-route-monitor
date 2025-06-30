@@ -1,6 +1,6 @@
 module "function" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "7.21.0"
+  version = "8.0.1"
 
   create_function = var.create
   create_package  = var.create_package
