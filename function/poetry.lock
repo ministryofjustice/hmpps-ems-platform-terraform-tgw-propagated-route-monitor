@@ -2,14 +2,14 @@
 
 [[package]]
 name = "aws-lambda-powertools"
-version = "3.13.0"
+version = "3.19.0"
 description = "Powertools for AWS Lambda (Python) is a developer toolkit to implement Serverless best practices and increase developer velocity."
 optional = false
 python-versions = "<4.0.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "aws_lambda_powertools-3.13.0-py3-none-any.whl", hash = "sha256:9df045f4c3ff944176655813dbff8c1160e056babf5e6d71d4e18c0003818f2e"},
-    {file = "aws_lambda_powertools-3.13.0.tar.gz", hash = "sha256:99dc11ac6eb81564f599fdd85ba79069f7740ae3481c99bca2cee8abb7c95543"},
+    {file = "aws_lambda_powertools-3.19.0-py3-none-any.whl", hash = "sha256:98f18d35f843cd46b80ccadcf39eefc0c489325bea116383bd93048a5241d9fc"},
+    {file = "aws_lambda_powertools-3.19.0.tar.gz", hash = "sha256:8897ba4be0b3a51f2b8f68946d650f3ef574fa2c40395544de03bd0c61979999"},
 ]
 
 [package.dependencies]
@@ -21,11 +21,13 @@ all = ["aws-encryption-sdk (>=3.1.1,<5.0.0)", "aws-xray-sdk (>=2.8.0,<3.0.0)", "
 aws-sdk = ["boto3 (>=1.34.32,<2.0.0)"]
 datadog = ["datadog-lambda (>=6.106.0,<7.0.0)"]
 datamasking = ["aws-encryption-sdk (>=3.1.1,<5.0.0)", "jsonpath-ng (>=1.6.0,<2.0.0)"]
+kafka-consumer-avro = ["avro (>=1.12.0,<2.0.0)"]
+kafka-consumer-protobuf = ["protobuf (>=6.30.2,<7.0.0)"]
 parser = ["pydantic (>=2.4.0,<3.0.0)"]
 redis = ["redis (>=4.4,<7.0)"]
 tracer = ["aws-xray-sdk (>=2.8.0,<3.0.0)"]
 validation = ["fastjsonschema (>=2.14.5,<3.0.0)"]
-valkey = ["valkey-glide (>=1.3.5,<2.0)"]
+valkey = ["valkey-glide (>=1.3.5,<3.0)"]
 
 [[package]]
 name = "black"
@@ -961,4 +963,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "02fea56e65d5b9859bb96c0119600d8cc0514e6173829cb0987175e9a0321676"
+content-hash = "329ce50acddd4bd74a8e102e08f0c72dd74c291f927063f3482dfbd306c461f5"
