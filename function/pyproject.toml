@@ -14,7 +14,7 @@ aws-lambda-powertools = "^3.4.0"
 pytest = "^8.3.2"
 black = "^25.1.0"
 isort = "^6.0.1"
-mypy = "^1.11.2"
+mypy = "^1.17.1"
 moto = "^5.1.10"
 
 [build-system]
